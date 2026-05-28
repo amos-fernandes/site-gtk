@@ -1,0 +1,42 @@
+steps:
+  # 1. Build da imagem Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build'
+    args:
+      - 'build'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2:$COMMIT_SHA'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2:latest'
+      - '.'
+
+  # 2. Push para o Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
+    args:
+      - 'push'
+      - '--all-tags'
+      - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2'
+
+  # 3. Deploy no Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'site-gtk-2'
+      - '--image'
+      - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2:$COMMIT_SHA'
+      - '--region'
+      - 'europe-west1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2:$COMMIT_SHA'
+  - 'europe-west1-docker.pkg.dev/gtk-bank-prod/cloud-run-source-deploy/site-gtk/site-gtk-2:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
