@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GTK — Gold Token. O primeiro token brasileiro lastreado 1:1 em ouro físico auditado. Compre ouro com PIX e leve para qualquer carteira." />
+  <meta name="keywords" content="GTK, Gold Token, token ouro, DeFi, blockchain, ouro digital, PIX, goldbank" />
+  <meta property="og:title" content="GTK — Gold Token | Ouro Real na Blockchain" />
+  <meta property="og:description" content="Cada 1 GTK = 1 grama de ouro físico auditado em cofre certificado." />
+  <meta property="og:image" content="https://goldbank.com.br/gtk-og.jpg" />
+  <meta property="og:url" content="https://gtk.goldbank.com.br" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>GTK — Gold Token | Ouro Real na Blockchain</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:       #FFD700;
+      --gold-light: #FFE94D;
+      --gold-dark:  #C9A500;
+      --gold-pale:  rgba(255,215,0,0.12);
+      --bg:         #07090F;
+      --bg2:        #0D1120;
+      --bg3:        #131929;
+      --border:     rgba(255,215,0,0.15);
+      --text:       #E8ECF4;
+      --muted:      #7A8299;
+      --green:      #22C55E;
+      --radius:     14px;
+      --font:       'Inter', system-ui, sans-serif;
+      --max:        1200px;
+      --transition: 0.28s cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    .label {
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .label::before { content: ''; width: 24px; height: 2px; background: var(--gold); border-radius: 1px; }
+    h1,h2,h3,h4 { font-weight: 800; line-height: 1.15; }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--gold) 0%, #FFF4A0 50%, var(--gold-dark) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 16px; }
+    .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; }
+
+    /* ============================================================
+       LAYOUT HELPERS
+    ============================================================ */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+    .section { padding: 100px 0; }
+    .section-header { margin-bottom: 64px; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-sub { margin: 0 auto; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; border: none; transition: var(--transition); white-space: nowrap;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: #07090F;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,215,0,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 1.5px solid rgba(255,215,0,0.4);
+    }
+    .btn-outline:hover { background: var(--gold-pale); border-color: var(--gold); }
+    .btn-lg { padding: 18px 36px; font-size: 1.05rem; border-radius: 12px; }
+
+    /* ============================================================
+       CARDS
+    ============================================================ */
+    .card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px;
+      transition: var(--transition);
+    }
+    .card:hover { border-color: rgba(255,215,0,0.35); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: var(--transition);
+    }
+    #navbar.scrolled {
+      background: rgba(7,9,15,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.2rem;
+    }
+    .nav-logo-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* ---- Coin spin hero ---- */
+    .coin-wrap {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      perspective: 900px;
+    }
+    /* Coin image */
+    .coin-spin {
+      width: 200px; height: 200px; border-radius: 50%;
+      animation: coin-rotate 6s linear infinite;
+      filter: drop-shadow(0 8px 32px rgba(255,215,0,0.6))
+              drop-shadow(0 0 60px rgba(255,215,0,0.25));
+      position: relative; z-index: 2;
+      object-fit: cover;
+      mix-blend-mode: lighten;
+    }
+    @keyframes coin-rotate {
+      0%   { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+    .coin-glow {
+      position: absolute; width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(255,215,0,0.05) 50%, transparent 70%);
+      animation: glow-pulse 3s ease-in-out infinite; z-index: 0;
+    }
+    @keyframes glow-pulse {
+      0%,100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+    .coin-ring {
+      position: absolute; width: 210px; height: 210px; border-radius: 50%;
+      border: 1px dashed rgba(255,215,0,0.3);
+      animation: ring-rotate 15s linear infinite; z-index: 1;
+    }
+    .coin-ring2 {
+      position: absolute; width: 240px; height: 240px; border-radius: 50%;
+      border: 1px solid rgba(255,215,0,0.1);
+      animation: ring-rotate 20s linear infinite reverse; z-index: 0;
+    }
+    @keyframes ring-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- Cards section ---- */
+    .cards-showcase {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+    }
+    .card-img-wrap {
+      position: relative; border-radius: 20px; overflow: hidden;
+      transition: var(--transition);
+    }
+    .card-img-wrap:hover { transform: translateY(-8px) scale(1.02); }
+    .card-img-wrap img {
+      width: 100%; border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    }
+    .card-badge {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,215,0,0.3); border-radius: 20px;
+      padding: 5px 14px; font-size: 11px; font-weight: 700;
+      color: var(--gold); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .cards-info { display: flex; flex-direction: column; gap: 20px; }
+    .card-tier {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      transition: var(--transition);
+    }
+    .card-tier:hover { border-color: rgba(255,215,0,0.4); }
+    .card-tier-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .card-tier-title { font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; }
+    .card-tier-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--muted); transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .nav-badge {
+      background: rgba(34,197,94,0.12); color: var(--green);
+      border: 1px solid rgba(34,197,94,0.25); border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; font-weight: 600;
+    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 1px; transition: var(--transition); }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding-top: 68px;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 30px; padding: 8px 16px; font-size: 13px; color: var(--gold);
+      font-weight: 600; margin-bottom: 28px;
+    }
+    .hero-tag-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
+    }
+    .hero-title { font-size: clamp(2.8rem, 6vw, 5rem); margin-bottom: 20px; }
+    .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 520px; margin-bottom: 40px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+    .hero-stat-num { font-size: 1.6rem; font-weight: 800; color: var(--gold); display: block; }
+    .hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+    .hero-visual {
+      position: relative; z-index: 2;
+      display: flex; justify-content: flex-end; align-items: center;
+    }
+    .hero-card-main {
+      background: rgba(13,17,32,0.85); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 20px; padding: 32px; width: 320px;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+    }
+    .hero-card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 16px; }
+    .hero-card-price { font-size: 2.8rem; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+    .hero-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .hero-card-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+    }
+    .hero-card-row:last-child { border-bottom: none; }
+    .hero-card-row span:first-child { color: var(--muted); }
+    .hero-card-row span:last-child { font-weight: 600; }
+    .backed-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(34,197,94,0.12); color: var(--green);
+      padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      border: 1px solid rgba(34,197,94,0.2); margin-top: 20px;
+    }
+
+    /* ============================================================
+       TICKER BAR
+    ============================================================ */
+    #ticker {
+      background: rgba(255,215,0,0.06); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 12px 0;
+      overflow: hidden;
+    }
+    .ticker-track {
+      display: flex; gap: 48px; white-space: nowrap;
+      animation: ticker-scroll 30s linear infinite;
+    }
+    .ticker-item {
+      display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500;
+    }
+    .ticker-item .name { color: var(--muted); }
+    .ticker-item .val { color: var(--text); font-weight: 600; }
+    .ticker-item .change { color: var(--green); font-size: 12px; }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       TRUST BAR
+    ============================================================ */
+    #trust {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .trust-grid {
+      display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; align-items: center;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; font-weight: 500;
+    }
+    .trust-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--bg2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+
+    /* ============================================================
+       HOW IT WORKS
+    ============================================================ */
+    .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; position: relative; }
+    .steps-grid::before {
+      content: ''; position: absolute; top: 44px; left: 15%; right: 15%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-pale), var(--gold-pale), transparent);
+    }
+    .step-card { text-align: center; padding: 32px 24px; }
+    .step-num {
+      width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #07090F; font-size: 1.4rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 8px rgba(255,215,0,0.08);
+      position: relative; z-index: 1;
+    }
+    .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ============================================================
+       FEATURES
+    ============================================================ */
+    #features { background: var(--bg2); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: var(--transition);
+    }
+    .feature-card:hover { border-color: rgba(255,215,0,0.35); transform: translateY(-4px); }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 12px; margin-bottom: 20px;
+      background: var(--gold-pale); border: 1px solid rgba(255,215,0,0.15);
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+    .feature-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ============================================================
+       BACKING / TRANSPARENCY
+    ============================================================ */
+    .backing-visual {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px; position: relative; overflow: hidden;
+    }
+    .backing-visual::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.06), transparent 70%);
+      pointer-events: none;
+    }
+    .backing-chart { margin: 32px 0; }
+    .bar-track {
+      height: 10px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-bottom: 8px;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      animation: fill-bar 1.6s ease-out both;
+    }
+    @keyframes fill-bar { from { width: 0 !important; } }
+    .bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 16px; }
+    .bar-label span:first-child { color: var(--muted); }
+    .bar-label span:last-child { color: var(--gold); font-weight: 600; }
+    .custody-list { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    .custody-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.1);
+      border-radius: 10px; padding: 14px 16px; font-size: 13px;
+    }
+    .custody-item-icon { font-size: 20px; }
+    .custody-item-text { flex: 1; }
+    .custody-item-text strong { display: block; font-weight: 600; font-size: 13px; }
+    .custody-item-text span { color: var(--muted); font-size: 11px; }
+    .custody-item-badge {
+      font-size: 11px; font-weight: 600; color: var(--green);
+      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);
+      padding: 3px 8px; border-radius: 20px;
+    }
+
+    /* ============================================================
+       KYC TIERS
+    ============================================================ */
+    #kyc { background: var(--bg2); }
+    .tiers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .tier-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 28px;
+      position: relative; text-align: center;
+    }
+    .tier-card.featured {
+      border-color: var(--gold); background: linear-gradient(160deg, rgba(255,215,0,0.05), var(--bg));
+    }
+    .tier-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #07090F; font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      padding: 4px 14px; border-radius: 20px; text-transform: uppercase; white-space: nowrap;
+    }
+    .tier-name { font-size: 0.85rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .tier-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; }
+    .tier-features { text-align: left; display: flex; flex-direction: column; gap: 10px; }
+    .tier-feat {
+      display: flex; align-items: flex-start; gap: 10px; font-size: 14px;
+    }
+    .tier-feat-check { color: var(--green); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ============================================================
+       SECURITY
+    ============================================================ */
+    .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .audit-card {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px;
+    }
+    .audit-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .audit-logo { width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .audit-title { font-weight: 700; font-size: 1rem; }
+    .audit-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .audit-score { margin-top: 16px; }
+    .score-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; margin-top: 6px; }
+    .score-fill { height: 100%; border-radius: 6px; background: var(--green); }
+    .score-label { display: flex; justify-content: space-between; font-size: 12px; margin-top: 8px; }
+    .score-label span:first-child { color: var(--muted); }
+    .score-label span:last-child { color: var(--green); font-weight: 600; }
+    .contract-info { margin-top: 24px; }
+    .contract-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+    }
+    .contract-row:last-child { border-bottom: none; }
+    .contract-row span:first-child { color: var(--muted); }
+    .contract-row a { color: var(--gold); font-weight: 600; font-family: 'Courier New', monospace; font-size: 12px; }
+    .contract-row a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       PIX SECTION
+    ============================================================ */
+    #pix {
+      background: linear-gradient(160deg, var(--bg) 0%, rgba(255,215,0,0.03) 50%, var(--bg) 100%);
+    }
+    .pix-demo {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 40px;
+    }
+    .pix-flow {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      flex-wrap: wrap; margin: 40px 0;
+    }
+    .pix-step {
+      text-align: center; flex: 1; min-width: 100px; max-width: 130px;
+    }
+    .pix-step-icon {
+      width: 60px; height: 60px; border-radius: 16px; margin: 0 auto 12px;
+      background: var(--bg3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+    }
+    .pix-step-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .pix-step-sub { font-size: 11px; color: var(--muted); }
+    .pix-arrow { color: var(--gold); font-size: 1.5rem; flex-shrink: 0; }
+    .pix-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+    .pix-benefit {
+      display: flex; align-items: flex-start; gap: 12px; padding: 16px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .pix-benefit-icon { font-size: 22px; flex-shrink: 0; }
+    .pix-benefit-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .pix-benefit-desc { font-size: 12px; color: var(--muted); }
+
+    /* ============================================================
+       ROADMAP
+    ============================================================ */
+    #roadmap { background: var(--bg2); }
+    .roadmap-timeline { position: relative; padding-left: 40px; }
+    .roadmap-timeline::before {
+      content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(180deg, var(--gold) 0%, rgba(255,215,0,0.1) 100%);
+    }
+    .roadmap-item { position: relative; margin-bottom: 48px; }
+    .roadmap-item:last-child { margin-bottom: 0; }
+    .roadmap-dot {
+      position: absolute; left: -34px; top: 4px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--bg); border: 3px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .roadmap-dot.done { background: var(--gold); }
+    .roadmap-dot.active {
+      background: var(--bg); border-color: var(--gold);
+      box-shadow: 0 0 0 5px rgba(255,215,0,0.1);
+      animation: roadmap-pulse 2.5s infinite;
+    }
+    @keyframes roadmap-pulse {
+      0%,100% { box-shadow: 0 0 0 5px rgba(255,215,0,0.1); }
+      50% { box-shadow: 0 0 0 10px rgba(255,215,0,0.04); }
+    }
+    .roadmap-period { font-size: 12px; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .roadmap-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .roadmap-items { display: flex; flex-direction: column; gap: 6px; }
+    .roadmap-item-li {
+      display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted);
+    }
+    .roadmap-item-li.done { color: var(--text); }
+    .roadmap-item-li .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+    .roadmap-item-li.done .dot { background: var(--green); }
+    .roadmap-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; margin-left: 8px;
+    }
+    .tag-done { background: rgba(34,197,94,0.12); color: var(--green); }
+    .tag-active { background: rgba(255,215,0,0.12); color: var(--gold); }
+    .tag-soon { background: rgba(122,130,153,0.15); color: var(--muted); }
+
+    /* ============================================================
+       FAQ
+    ============================================================ */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 800px; margin: 0 auto; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 22px 24px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      font-weight: 600; font-size: 0.95rem;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .faq-q:hover { color: var(--gold); }
+    .faq-icon { font-size: 20px; color: var(--gold); flex-shrink: 0; transition: var(--transition); }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      padding: 0 24px; max-height: 0; overflow: hidden;
+      font-size: 0.9rem; color: var(--muted); line-height: 1.7;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 22px; }
+
+    /* ============================================================
+       CTA
+    ============================================================ */
+    #cta {
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.08) 0%, transparent 60%), var(--bg);
+      text-align: center;
+    }
+    .cta-title { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 20px; }
+    .cta-sub { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 40px; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .cta-disclaimer { margin-top: 32px; font-size: 12px; color: var(--muted); max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 64px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;
+    }
+    .footer-brand .logo { margin-bottom: 16px; }
+    .footer-desc { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 260px; margin-bottom: 24px; }
+    .footer-socials { display: flex; gap: 12px; }
+    .footer-social {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--bg3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; color: var(--muted); transition: var(--transition);
+    }
+    .footer-social:hover { color: var(--gold); border-color: rgba(255,215,0,0.3); }
+    .footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 16px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 14px; color: var(--muted); transition: var(--transition); }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--muted);
+    }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { color: var(--muted); }
+    .footer-legal a:hover { color: var(--text); }
+
+    /* ============================================================
+       WAITLIST / EARLY ACCESS
+    ============================================================ */
+    .waitlist-wrap {
+      max-width: 560px; margin: 0 auto; text-align: center;
+    }
+    .waitlist-form {
+      display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;
+    }
+    .waitlist-input {
+      flex: 1; min-width: 200px; padding: 16px 20px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-size: 15px;
+      font-family: var(--font); transition: var(--transition);
+      outline: none;
+    }
+    .waitlist-input:focus { border-color: var(--gold); }
+    .waitlist-input::placeholder { color: var(--muted); }
+    .waitlist-count {
+      display: flex; justify-content: center; gap: 40px;
+      margin-top: 40px; flex-wrap: wrap;
+    }
+    .waitlist-stat { text-align: center; }
+    .waitlist-stat-num { font-size: 2.2rem; font-weight: 900; color: var(--gold); }
+    .waitlist-stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ============================================================
+       SOCIAL PROOF / TESTIMONIALS
+    ============================================================ */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .testimonial-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: var(--transition); display: flex; flex-direction: column; gap: 16px;
+    }
+    .testimonial-card:hover { border-color: rgba(255,215,0,0.3); transform: translateY(-3px); }
+    .testimonial-stars { color: var(--gold); letter-spacing: 2px; font-size: 14px; }
+    .testimonial-text { font-size: 0.9rem; color: var(--text); line-height: 1.7; flex: 1; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; color: #07090F; flex-shrink: 0;
+    }
+    .testimonial-name { font-weight: 700; font-size: 14px; }
+    .testimonial-role { font-size: 12px; color: var(--muted); }
+    .quote-mark { font-size: 3rem; color: var(--gold); opacity: 0.15; line-height: 1; }
+
+    /* ============================================================
+       SCROLL ANIMATIONS
+    ============================================================ */
+    [data-animate] {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    [data-animate].visible { opacity: 1; transform: translateY(0); }
+    [data-delay="1"] { transition-delay: 0.1s; }
+    [data-delay="2"] { transition-delay: 0.2s; }
+    [data-delay="3"] { transition-delay: 0.3s; }
+    [data-delay="4"] { transition-delay: 0.4s; }
+    [data-delay="5"] { transition-delay: 0.5s; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-visual { display: none; }
+      .hero-content { max-width: 100%; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 72px 0; }
+      .grid-3, .features-grid, .steps-grid, .tiers-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .pix-benefits { grid-template-columns: 1fr; }
+      .security-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-legal { flex-wrap: wrap; justify-content: center; }
+      .trust-grid { gap: 24px; }
+      .hero-stats { gap: 24px; }
+      .hero-title { font-size: 2.6rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon"><img src="logo.png" alt="GTK" /></div>
+      <span><span class="gradient-text">GTK</span> Gold Token</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how-it-works">Como Funciona</a>
+      <a href="#features">Recursos</a>
+      <a href="#backing">Reservas</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#cartoes">Cartões</a>
+      <a href="#waitlist" style="color:var(--gold); font-weight:600;">Early Access</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <span class="nav-badge">● Rede Ativa</span>
+      <a href="https://goldbank.com.br" class="btn btn-outline" target="_blank">GoldBank App</a>
+      <a href="https://app.goldbank.com.br" class="btn btn-primary">Comprar GTK</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="container" style="display:grid; grid-template-columns:1fr 400px; gap:40px; align-items:center; width:100%;">
+      <div class="hero-content">
+        <div class="hero-tag" data-animate>
+          <span class="hero-tag-dot"></span>
+          Token ERC-20 — Ethereum Mainnet
+        </div>
+        <h1 class="hero-title" data-animate data-delay="1">
+          Ouro Real.<br/>
+          <span class="gradient-text">Na sua Carteira.</span>
+        </h1>
+        <p class="hero-sub" data-animate data-delay="2">
+          GTK é o primeiro token brasileiro onde <strong>1 GTK = 1 grama de ouro físico</strong>,
+          lastreado 1:1 em barras certificadas em cofres auditados. Compre com PIX. Resgate ouro real.
+        </p>
+        <div class="hero-actions" data-animate data-delay="3">
+          <a href="https://app.goldbank.com.br" class="btn btn-primary btn-lg">
+            Comprar GTK com PIX
+          </a>
+          <a href="#how-it-works" class="btn btn-outline btn-lg">
+            Como Funciona ↓
+          </a>
+        </div>
+        <div class="hero-stats" data-animate data-delay="4">
+          <div>
+            <span class="hero-stat-num" id="stat-price">$95.42/g</span>
+            <span class="hero-stat-label">Preço do Ouro (XAU)</span>
+          </div>
+          <div>
+            <span class="hero-stat-num">100%</span>
+            <span class="hero-stat-label">Lastreado em Ouro</span>
+          </div>
+          <div>
+            <span class="hero-stat-num">3 KYC</span>
+            <span class="hero-stat-label">Níveis de Acesso</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" style="flex-direction:column; gap:32px;">
+        <div class="coin-wrap" data-animate data-delay="1">
+          <div class="coin-glow"></div>
+          <div class="coin-ring2"></div>
+          <div class="coin-ring"></div>
+          <img class="coin-spin" src="coin.jpeg" alt="GTK Gold Token Coin"
+               onerror="this.src='logo.png'" />
+        </div>
+        <div class="hero-card-main" data-animate data-delay="2">
+          <div class="hero-card-label">Portfolio GTK</div>
+          <div class="hero-card-price gradient-text" id="card-price">$95.42</div>
+          <div class="hero-card-sub">por grama de ouro / 1 GTK</div>
+
+          <div class="hero-card-row">
+            <span>Símbolo</span>
+            <span>GTK</span>
+          </div>
+          <div class="hero-card-row">
+            <span>Padrão</span>
+            <span>ERC-20 (UUPS)</span>
+          </div>
+          <div class="hero-card-row">
+            <span>Depósito mínimo</span>
+            <span>R$ 50,00</span>
+          </div>
+          <div class="hero-card-row">
+            <span>Taxa depósito</span>
+            <span>0,5%</span>
+          </div>
+          <div class="hero-card-row">
+            <span>Taxa saque</span>
+            <span>0,75%</span>
+          </div>
+          <div class="hero-card-row">
+            <span>Resgate físico</span>
+            <span>Mín. 100g</span>
+          </div>
+          <div class="backed-badge">
+            ✓ 100% Lastreado em Ouro Físico
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TICKER BAR
+  ============================================================ -->
+  <div id="ticker">
+    <div class="container" style="overflow:hidden;">
+      <div class="ticker-track" id="ticker-track">
+        <div class="ticker-item"><span class="name">XAU/USD</span><span class="val">$3,341.20</span><span class="change">+0.42%</span></div>
+        <div class="ticker-item"><span class="name">GTK/BRL</span><span class="val">R$ 536,22</span><span class="change">+0.38%</span></div>
+        <div class="ticker-item"><span class="name">ETH/USD</span><span class="val">$2,891.00</span><span class="change">+1.12%</span></div>
+        <div class="ticker-item"><span class="name">BTC/USD</span><span class="val">$97,842.00</span><span class="change">+0.74%</span></div>
+        <div class="ticker-item"><span class="name">Reserva GTK</span><span class="val">100%</span><span class="change">Auditada</span></div>
+        <div class="ticker-item"><span class="name">Pureza</span><span class="val">99,9%</span><span class="change">Certificada</span></div>
+        <div class="ticker-item"><span class="name">Rede</span><span class="val">Ethereum</span><span class="change">Mainnet</span></div>
+        <!-- duplicado para scroll contínuo -->
+        <div class="ticker-item"><span class="name">XAU/USD</span><span class="val">$3,341.20</span><span class="change">+0.42%</span></div>
+        <div class="ticker-item"><span class="name">GTK/BRL</span><span class="val">R$ 536,22</span><span class="change">+0.38%</span></div>
+        <div class="ticker-item"><span class="name">ETH/USD</span><span class="val">$2,891.00</span><span class="change">+1.12%</span></div>
+        <div class="ticker-item"><span class="name">BTC/USD</span><span class="val">$97,842.00</span><span class="change">+0.74%</span></div>
+        <div class="ticker-item"><span class="name">Reserva GTK</span><span class="val">100%</span><span class="change">Auditada</span></div>
+        <div class="ticker-item"><span class="name">Pureza</span><span class="val">99,9%</span><span class="change">Certificada</span></div>
+        <div class="ticker-item"><span class="name">Rede</span><span class="val">Ethereum</span><span class="change">Mainnet</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TRUST
+  ============================================================ -->
+  <section id="trust">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-item" data-animate>
+          <div class="trust-icon">⛓</div>
+          <span>Smart Contract Auditado</span>
+        </div>
+        <div class="trust-item" data-animate data-delay="1">
+          <div class="trust-icon">🔒</div>
+          <span>OpenZeppelin Upgradeable</span>
+        </div>
+        <div class="trust-item" data-animate data-delay="2">
+          <div class="trust-icon">🏛</div>
+          <span>Cofres Certificados</span>
+        </div>
+        <div class="trust-item" data-animate data-delay="3">
+          <div class="trust-icon">🇧🇷</div>
+          <span>Integrado com PIX</span>
+        </div>
+        <div class="trust-item" data-animate data-delay="4">
+          <div class="trust-icon">📊</div>
+          <span>Prova de Reservas On-Chain</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS
+  ============================================================ -->
+  <section id="how-it-works" class="section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Como Funciona</span>
+        <h2 class="section-title" data-animate data-delay="1">Ouro Digital em <span class="gradient-text">3 Passos</span></h2>
+        <p class="section-sub" data-animate data-delay="2">
+          Do PIX ao blockchain em minutos. Sem burocracia, sem câmbio desnecessário.
+        </p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card card" data-animate>
+          <div class="step-num">1</div>
+          <h3 class="step-title">KYC & Cadastro</h3>
+          <p class="step-desc">Crie sua conta em goldbank.com.br. Verificação de identidade rápida com 3 níveis de acesso conforme seu volume de operações.</p>
+        </div>
+        <div class="step-card card" data-animate data-delay="2">
+          <div class="step-num">2</div>
+          <h3 class="step-title">Deposite via PIX</h3>
+          <p class="step-desc">Transfira qualquer valor (mín. R$ 50) via PIX. Em segundos o sistema converte BRL → USDT → GTK ao preço spot do ouro.</p>
+        </div>
+        <div class="step-card card" data-animate data-delay="3">
+          <div class="step-num">3</div>
+          <h3 class="step-title">Guarde ou Resgate</h3>
+          <p class="step-desc">Mantenha GTK em qualquer carteira ERC-20, saque para PIX (BRL), troque por USDT ou resgate ouro físico (mín. 100g).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES
+  ============================================================ -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Recursos</span>
+        <h2 class="section-title" data-animate data-delay="1">Por que escolher <span class="gradient-text">GTK?</span></h2>
+        <p class="section-sub" data-animate data-delay="2">
+          Tecnologia DeFi com a segurança do ativo mais antigo do mundo.
+        </p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🥇</div>
+          <h3 class="feature-title">Lastreado 1:1</h3>
+          <p class="feature-desc">Cada GTK representa exatamente 1 grama de ouro físico armazenado em cofres auditados. Nenhum GTK é criado sem ouro correspondente no cofre.</p>
+        </div>
+        <div class="feature-card" data-animate data-delay="1">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">PIX Instantâneo</h3>
+          <p class="feature-desc">Único token lastreado em ouro do Brasil com integração nativa ao PIX. Compre em reais, receba GTK em segundos, sem conta em dólar.</p>
+        </div>
+        <div class="feature-card" data-animate data-delay="2">
+          <div class="feature-icon">🔍</div>
+          <h3 class="feature-title">Transparência Total</h3>
+          <p class="feature-desc">Cada barra de ouro tem número de série registrado on-chain. Qualquer pessoa pode verificar as reservas em tempo real pelo smart contract.</p>
+        </div>
+        <div class="feature-card" data-animate data-delay="1">
+          <div class="feature-icon">🛡</div>
+          <h3 class="feature-title">Contrato Upgradeable</h3>
+          <p class="feature-desc">Padrão UUPS (Universal Upgradeable Proxy Standard) com multisig. Atualizações passam por timelock e governança — sem surpresas.</p>
+        </div>
+        <div class="feature-card" data-animate data-delay="2">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Multi-Rede</h3>
+          <p class="feature-desc">Disponível no Ethereum (mainnet), com suporte planejado para Polygon, BNB Chain e Arbitrum — sem alterar seu saldo.</p>
+        </div>
+        <div class="feature-card" data-animate data-delay="3">
+          <div class="feature-icon">📦</div>
+          <h3 class="feature-title">Resgate Físico</h3>
+          <p class="feature-desc">Possui 100g ou mais? Solicite entrega de lingotes. O protocolo processa o resgate e envia ouro físico diretamente para você.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BACKING / TRANSPARENCY
+  ============================================================ -->
+  <section id="backing" class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <span class="label" data-animate>Reservas</span>
+          <h2 class="section-title" data-animate data-delay="1">Prova de <span class="gradient-text">Reservas</span></h2>
+          <p class="section-sub" data-animate data-delay="2">
+            Auditoria contínua e transparente. Todo GTK emitido corresponde a um grama de ouro registrado com número de série único na blockchain.
+          </p>
+
+          <div class="custody-list" data-animate data-delay="3">
+            <div class="custody-item">
+              <div class="custody-item-icon">📊</div>
+              <div class="custody-item-text">
+                <strong>Índice de Lastro</strong>
+                <span>Reservas / Circulação — verificável on-chain</span>
+              </div>
+              <div class="custody-item-badge">100%</div>
+            </div>
+            <div class="custody-item">
+              <div class="custody-item-icon">🏆</div>
+              <div class="custody-item-text">
+                <strong>Pureza do Ouro</strong>
+                <span>Barras certificadas — 99,00% a 99,99% de pureza</span>
+              </div>
+              <div class="custody-item-badge">99.9%</div>
+            </div>
+            <div class="custody-item">
+              <div class="custody-item-icon">🔐</div>
+              <div class="custody-item-text">
+                <strong>Custódia Certificada</strong>
+                <span>Cofres auditados com registro por número de série</span>
+              </div>
+              <div class="custody-item-badge">Ativo</div>
+            </div>
+            <div class="custody-item">
+              <div class="custody-item-icon">📡</div>
+              <div class="custody-item-text">
+                <strong>Oracle de Preço</strong>
+                <span>Atualização automática — máximo 1h de atraso aceito</span>
+              </div>
+              <div class="custody-item-badge">Live</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="backing-visual" data-animate data-delay="2">
+          <h3 style="margin-bottom:24px; font-size:1.1rem;">Composição das Reservas</h3>
+
+          <div class="backing-chart">
+            <div class="bar-label"><span>Ouro Físico (barras)</span><span>85%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+
+            <div class="bar-label"><span>Ouro em Custódia Pendente</span><span>10%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:10%; background: linear-gradient(90deg,#C9A500,#FFD700);"></div></div>
+
+            <div class="bar-label"><span>Buffer de Liquidez (USDT)</span><span>5%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:5%; background: rgba(255,215,0,0.5);"></div></div>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:24px; margin-top:8px;">
+            <div style="font-size:12px;color:var(--muted); margin-bottom:16px;">MÉTRICAS DE SEGURANÇA</div>
+            <div class="hero-card-row">
+              <span>Limite diário de depósito</span>
+              <span>$1.000.000 USDT</span>
+            </div>
+            <div class="hero-card-row">
+              <span>Limite diário de saque</span>
+              <span>$500.000 USDT</span>
+            </div>
+            <div class="hero-card-row">
+              <span>Taxa de depósito</span>
+              <span>0,50% (50 bps)</span>
+            </div>
+            <div class="hero-card-row">
+              <span>Taxa de saque</span>
+              <span>0,75% (75 bps)</span>
+            </div>
+            <div class="hero-card-row">
+              <span>Fee de resgate físico</span>
+              <span>0,50% (50 bps)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       KYC TIERS
+  ============================================================ -->
+  <section id="kyc" class="section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Acesso</span>
+        <h2 class="section-title" data-animate data-delay="1">Níveis de <span class="gradient-text">Verificação</span></h2>
+        <p class="section-sub" data-animate data-delay="2">
+          Três tiers KYC com limites progressivos. Conformidade com normas brasileiras de prevenção à lavagem de dinheiro.
+        </p>
+      </div>
+      <div class="tiers-grid">
+        <div class="tier-card" data-animate>
+          <div class="tier-name">Tier 1</div>
+          <div class="tier-title">Basic</div>
+          <div class="tier-features">
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Verificação de CPF e selfie</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Limite diário: <strong>1.000 GTK</strong></span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Depósito PIX ativo</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Saque via PIX</span></div>
+            <div class="tier-feat" style="opacity:.45;"><span style="color:var(--muted)">✗</span><span>Resgate de ouro físico</span></div>
+          </div>
+        </div>
+        <div class="tier-card featured" data-animate data-delay="1">
+          <div class="tier-badge">Mais Popular</div>
+          <div class="tier-name">Tier 2</div>
+          <div class="tier-title gradient-text">Standard</div>
+          <div class="tier-features">
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Documentação completa + comprovante de renda</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Limite diário: <strong>10.000 GTK</strong></span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Todas as funções do Tier 1</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Acesso à API pública</span></div>
+            <div class="tier-feat" style="opacity:.45;"><span style="color:var(--muted)">✗</span><span>Resgate físico &lt; 100g</span></div>
+          </div>
+        </div>
+        <div class="tier-card" data-animate data-delay="2">
+          <div class="tier-name">Tier 3</div>
+          <div class="tier-title">Institutional</div>
+          <div class="tier-features">
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Pessoa Jurídica verificada</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Limite: <strong>Ilimitado</strong></span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Todas as funções do Tier 2</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Resgate de ouro físico</span></div>
+            <div class="tier-feat"><span class="tier-feat-check">✓</span><span>Suporte dedicado 24/7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECURITY
+  ============================================================ -->
+  <section id="security" class="section" style="background: var(--bg2);">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Segurança</span>
+        <h2 class="section-title" data-animate data-delay="1">Smart Contract <span class="gradient-text">Auditado</span></h2>
+        <p class="section-sub" data-animate data-delay="2">
+          Código aberto, auditável por qualquer pessoa no Etherscan. Construído com os padrões mais rigorosos da indústria.
+        </p>
+      </div>
+      <div class="security-grid" data-animate>
+        <div>
+          <div class="audit-card" style="margin-bottom:20px;">
+            <div class="audit-header">
+              <div class="audit-logo">🔒</div>
+              <div>
+                <div class="audit-title">OpenZeppelin Contracts</div>
+                <div class="audit-sub">Padrão da indústria para contratos Ethereum</div>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--muted); line-height:1.6;">
+              GTKToken, GTKBank e GTKGovernance são construídos sobre as bibliotecas OpenZeppelin Upgradeable — o padrão mais auditado do ecossistema Ethereum, protegendo mais de $20B em ativos.
+            </p>
+            <div class="audit-score" style="margin-top:16px;">
+              <div style="font-size:12px;color:var(--muted); margin-bottom:8px;">Cobertura de proteções</div>
+              <div class="score-bar"><div class="score-fill" style="width:97%"></div></div>
+              <div class="score-label"><span>ReentrancyGuard + AccessControl + Pausable</span><span>97%</span></div>
+            </div>
+          </div>
+
+          <div class="audit-card">
+            <div class="audit-header">
+              <div class="audit-logo">⛓</div>
+              <div>
+                <div class="audit-title">Contratos Verificados</div>
+                <div class="audit-sub">Ethereum Mainnet</div>
+              </div>
+            </div>
+            <div class="contract-info">
+              <div class="contract-row">
+                <span>GTKToken</span>
+                <a href="https://etherscan.io" target="_blank">0x...GTK ↗</a>
+              </div>
+              <div class="contract-row">
+                <span>GTKBank</span>
+                <a href="https://etherscan.io" target="_blank">0x...BNK ↗</a>
+              </div>
+              <div class="contract-row">
+                <span>GTKGovernance</span>
+                <a href="https://etherscan.io" target="_blank">0x...GOV ↗</a>
+              </div>
+              <div class="contract-row">
+                <span>GTKPriceOracle</span>
+                <a href="https://etherscan.io" target="_blank">0x...ORC ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="audit-card" style="margin-bottom:20px;">
+            <h3 style="font-size:1rem; margin-bottom:20px;">Proteções do Protocolo</h3>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div class="pix-benefit" style="padding:14px;">
+                <div class="pix-benefit-icon">🛡</div>
+                <div>
+                  <div class="pix-benefit-title">Reentrância Bloqueada</div>
+                  <div class="pix-benefit-desc">ReentrancyGuard em todas as funções de mint/burn/transfer.</div>
+                </div>
+              </div>
+              <div class="pix-benefit" style="padding:14px;">
+                <div class="pix-benefit-icon">⏸</div>
+                <div>
+                  <div class="pix-benefit-title">Emergency Pause</div>
+                  <div class="pix-benefit-desc">O protocolo pode ser pausado em caso de emergência sem afetar fundos.</div>
+                </div>
+              </div>
+              <div class="pix-benefit" style="padding:14px;">
+                <div class="pix-benefit-icon">👁</div>
+                <div>
+                  <div class="pix-benefit-title">Compliance & Blacklist</div>
+                  <div class="pix-benefit-desc">COMPLIANCE_ROLE para bloqueio de endereços e gestão de KYC tiers.</div>
+                </div>
+              </div>
+              <div class="pix-benefit" style="padding:14px;">
+                <div class="pix-benefit-icon">📈</div>
+                <div>
+                  <div class="pix-benefit-title">Oracle com Stale-Price Guard</div>
+                  <div class="pix-benefit-desc">Preço com mais de 1 hora bloqueia minting — sem exploit de oracle stale.</div>
+                </div>
+              </div>
+              <div class="pix-benefit" style="padding:14px;">
+                <div class="pix-benefit-icon">🔑</div>
+                <div>
+                  <div class="pix-benefit-title">Role-Based Access Control</div>
+                  <div class="pix-benefit-desc">6 roles distintos: MINTER, BURNER, PAUSER, UPGRADER, COMPLIANCE, CUSTODIAN.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PIX INTEGRATION
+  ============================================================ -->
+  <section id="pix" class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <span class="label" data-animate>Exclusivo no Brasil</span>
+          <h2 class="section-title" data-animate data-delay="1">Compre Ouro<br/><span class="gradient-text">com PIX</span></h2>
+          <p class="section-sub" data-animate data-delay="2">
+            A única solução que conecta o sistema de pagamentos instantâneos do Banco Central com ativos lastreados em ouro na blockchain Ethereum.
+          </p>
+          <div style="margin-top:32px;" data-animate data-delay="3">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <div style="width:36px;height:36px;background:rgba(255,215,0,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⚡</div>
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Conversão Automática BRL → GTK</div>
+                  <div style="font-size:13px; color:var(--muted);">O sistema recebe o PIX, converte para USDT ao preço do dólar e emite GTK ao preço spot do ouro automaticamente.</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <div style="width:36px;height:36px;background:rgba(255,215,0,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔒</div>
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Deduplicação On-Chain</div>
+                  <div style="font-size:13px; color:var(--muted);">Cada PIX tem um ID único gravado no contrato. Impossível processar o mesmo pagamento duas vezes.</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <div style="width:36px;height:36px;background:rgba(255,215,0,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🏦</div>
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Saque via PIX (Prazo: 1-2 dias)</div>
+                  <div style="font-size:13px; color:var(--muted);">Queime GTK, receba USDT liquidado em BRL na sua conta bancária. Taxa de apenas 0,75%.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pix-demo" data-animate data-delay="2">
+          <h3 style="font-size:1rem; margin-bottom:8px;">Fluxo de Depósito PIX</h3>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:24px;">Do pagamento ao token na carteira</p>
+          <div class="pix-flow">
+            <div class="pix-step">
+              <div class="pix-step-icon">💰</div>
+              <div class="pix-step-title">Você</div>
+              <div class="pix-step-sub">Envia PIX em BRL</div>
+            </div>
+            <div class="pix-arrow">→</div>
+            <div class="pix-step">
+              <div class="pix-step-icon">🏦</div>
+              <div class="pix-step-title">Asaas</div>
+              <div class="pix-step-sub">Processa pagamento</div>
+            </div>
+            <div class="pix-arrow">→</div>
+            <div class="pix-step">
+              <div class="pix-step-icon">⛓</div>
+              <div class="pix-step-title">GTKBank</div>
+              <div class="pix-step-sub">Smart contract processa</div>
+            </div>
+            <div class="pix-arrow">→</div>
+            <div class="pix-step">
+              <div class="pix-step-icon">🥇</div>
+              <div class="pix-step-title">GTK</div>
+              <div class="pix-step-sub">Tokens na sua carteira</div>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.12); border-radius:12px; padding:20px; margin-top:8px;">
+            <div style="font-size:11px;color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px;">Exemplo de transação</div>
+            <div class="hero-card-row"><span>Você envia</span><span style="color:var(--gold)">R$ 1.000,00</span></div>
+            <div class="hero-card-row"><span>Câmbio USD/BRL</span><span>~R$ 5,62</span></div>
+            <div class="hero-card-row"><span>Valor em USD</span><span>~$177,94</span></div>
+            <div class="hero-card-row"><span>Preço do ouro</span><span>~$95,42/g</span></div>
+            <div class="hero-card-row"><span>Taxa (0,5%)</span><span>-0,93 GTK</span></div>
+            <div class="hero-card-row" style="border-bottom:none;"><span>Você recebe</span><span style="color:var(--green); font-weight:700;">≈ 1,83 GTK</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ROADMAP
+  ============================================================ -->
+  <section id="roadmap" class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <span class="label" data-animate>Roadmap</span>
+          <h2 class="section-title" data-animate data-delay="1">O Caminho do <span class="gradient-text">GTK</span></h2>
+          <p class="section-sub" data-animate data-delay="2">
+            Desenvolvimento transparente e incremental. Cada etapa construída sobre a anterior.
+          </p>
+          <div style="margin-top:40px;" data-animate data-delay="3">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <span style="width:12px;height:12px;border-radius:50%;background:var(--gold);display:inline-block;"></span>
+                Concluído
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <span style="width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);display:inline-block;box-shadow:0 0 8px rgba(255,215,0,0.3)"></span>
+                Em Progresso
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <span style="width:12px;height:12px;border-radius:50%;background:var(--muted);display:inline-block;opacity:0.4;"></span>
+                Planejado
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-timeline" data-animate data-delay="2">
+          <div class="roadmap-item">
+            <div class="roadmap-dot done"></div>
+            <div class="roadmap-period">Q1 2026</div>
+            <div class="roadmap-title">Fundação</div>
+            <div class="roadmap-items">
+              <div class="roadmap-item-li done"><span class="dot"></span>Contratos Solidity — GTKToken, GTKBank, Oracle, Governance</div>
+              <div class="roadmap-item-li done"><span class="dot"></span>Deploy na Sepolia Testnet <span class="roadmap-tag tag-done">✓ Mai/2026</span></div>
+              <div class="roadmap-item-li done"><span class="dot"></span>API Node.js modularizada</div>
+              <div class="roadmap-item-li done"><span class="dot"></span>Integração PIX via Asaas</div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-dot active"></div>
+            <div class="roadmap-period">Q2 2026</div>
+            <div class="roadmap-title">Lançamento</div>
+            <div class="roadmap-items">
+              <div class="roadmap-item-li"><span class="dot"></span>Deploy Ethereum Mainnet <span class="roadmap-tag tag-active">Em andamento</span></div>
+              <div class="roadmap-item-li"><span class="dot"></span>Auditoria de segurança formal</div>
+              <div class="roadmap-item-li"><span class="dot"></span>GCP — Cloud SQL + Secret Manager</div>
+              <div class="roadmap-item-li"><span class="dot"></span>App mobile goldbank.com.br</div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-period">Q3 2026</div>
+            <div class="roadmap-title">Expansão</div>
+            <div class="roadmap-items">
+              <div class="roadmap-item-li"><span class="dot"></span>Bridge para Polygon e Arbitrum <span class="roadmap-tag tag-soon">Planejado</span></div>
+              <div class="roadmap-item-li"><span class="dot"></span>Governança DAO (GTKGovernance)</div>
+              <div class="roadmap-item-li"><span class="dot"></span>Listagem em DEXs (Uniswap V3)</div>
+              <div class="roadmap-item-li"><span class="dot"></span>Pool de liquidez GTK/USDC</div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-period">Q4 2026</div>
+            <div class="roadmap-title">Institucional</div>
+            <div class="roadmap-items">
+              <div class="roadmap-item-li"><span class="dot"></span>API B2B para custodiantes</div>
+              <div class="roadmap-item-li"><span class="dot"></span>Integração Open Finance</div>
+              <div class="roadmap-item-li"><span class="dot"></span>Parceria com custódia regulamentada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CARTÕES GOLDBANK
+  ============================================================ -->
+  <section id="cartoes" class="section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Cartões</span>
+        <h2 class="section-title" data-animate data-delay="1">Dois cartões.<br/><span class="gradient-text">Um legado.</span></h2>
+        <p class="section-sub" data-animate data-delay="2">
+          O cartão GoldBank transforma seu saldo GTK em poder de compra real — debitando ouro ao preço spot no momento da transação.
+        </p>
+      </div>
+
+      <!-- vitrine dos cartões -->
+      <div class="cards-showcase" data-animate style="margin-bottom:64px;">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="card-img-wrap">
+            <div class="card-badge">Gold Edition</div>
+            <img src="card-gold.png" alt="GoldBank Gold Card" />
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="card-img-wrap">
+            <div class="card-badge">Black Edition</div>
+            <img src="card-black.png" alt="GoldBank Black Card" />
+          </div>
+        </div>
+      </div>
+
+      <!-- tiers dos cartões -->
+      <div class="cards-showcase" data-animate data-delay="1">
+        <div class="cards-info">
+          <div class="card-tier">
+            <div class="card-tier-icon" style="background:linear-gradient(135deg,#C9A500,#FFD700);">🥇</div>
+            <div>
+              <div class="card-tier-title">GoldBank Gold</div>
+              <div class="card-tier-desc">Para holders Tier 1 e 2. Débito automático em GTK convertido para BRL na hora da compra. Limite diário proporcional ao saldo.</div>
+            </div>
+          </div>
+          <div class="card-tier">
+            <div class="card-tier-icon" style="background:linear-gradient(135deg,#1a1a1a,#2d2d2d); border:1px solid rgba(255,215,0,0.3);">⬛</div>
+            <div>
+              <div class="card-tier-title">GoldBank Black</div>
+              <div class="card-tier-desc">Exclusivo Tier 3 Institucional. Limites ilimitados, cashback em GTK, seguro de viagem, acesso a salas VIP e suporte 24/7 dedicado.</div>
+            </div>
+          </div>
+          <div class="card-tier">
+            <div class="card-tier-icon" style="background:rgba(255,215,0,0.08);">💎</div>
+            <div>
+              <div class="card-tier-title">Cashback em Ouro Real</div>
+              <div class="card-tier-desc">A cada compra, parte do valor retorna como GTK. Você gasta em BRL e acumula ouro físico automaticamente — sem precisar fazer nada.</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:32px;">
+          <div style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:20px;">Comparativo dos Cartões</div>
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; color:var(--muted); padding:10px 8px; border-bottom:1px solid var(--border); font-weight:500;">Benefício</th>
+                <th style="text-align:center; color:var(--gold); padding:10px 8px; border-bottom:1px solid var(--border);">Gold</th>
+                <th style="text-align:center; color:var(--text); padding:10px 8px; border-bottom:1px solid var(--border);">Black</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:10px 8px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">Débito em GTK</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">✓</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+              <tr><td style="padding:10px 8px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">Cashback em GTK</td><td style="text-align:center; color:var(--gold); border-bottom:1px solid rgba(255,255,255,0.04);">0,5%</td><td style="text-align:center; color:var(--gold); border-bottom:1px solid rgba(255,255,255,0.04);">1,0%</td></tr>
+              <tr><td style="padding:10px 8px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">Limite diário</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">R$ 5.000</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">Ilimitado</td></tr>
+              <tr><td style="padding:10px 8px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">Salas VIP aeroporto</td><td style="text-align:center; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+              <tr><td style="padding:10px 8px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">Seguro viagem</td><td style="text-align:center; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.04);">—</td><td style="text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);">✓</td></tr>
+              <tr><td style="padding:10px 8px; color:var(--muted);">Suporte dedicado 24/7</td><td style="text-align:center; color:var(--muted);">—</td><td style="text-align:center;">✓</td></tr>
+            </tbody>
+          </table>
+          <a href="https://app.goldbank.com.br" class="btn btn-primary" style="width:100%; margin-top:24px; justify-content:center;">
+            Solicitar meu Cartão
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ
+  ============================================================ -->
+  <section id="faq" class="section" style="background: var(--bg2);">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Perguntas</span>
+        <h2 class="section-title" data-animate data-delay="1">Perguntas <span class="gradient-text">Frequentes</span></h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-animate>
+          <div class="faq-q">O que garante que meu GTK tem ouro por trás?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Cada barra de ouro depositada tem número de série único registrado no smart contract GTKToken. A função <code>getReserveRatio()</code> retorna o índice de lastro em tempo real — qualquer pessoa pode consultar no Etherscan sem precisar de permissão. O sistema só emite novos GTK se o total de ouro nos cofres for maior ou igual ao total em circulação.</div>
+        </div>
+        <div class="faq-item" data-animate data-delay="1">
+          <div class="faq-q">O GTK é regulamentado no Brasil?<span class="faq-icon">+</span></div>
+          <div class="faq-a">GTK opera como token de utilidade lastreado em commodity. Seguimos as diretrizes do Banco Central referentes a criptoativos (Lei 14.478/2022) e aplicamos KYC/AML em todos os usuários conforme regulamentação do COAF. Nossa integração PIX opera através de parceiro autorizado pelo Banco Central.</div>
+        </div>
+        <div class="faq-item" data-animate data-delay="2">
+          <div class="faq-q">Posso usar GTK em qualquer carteira Ethereum?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Sim. GTK é um token ERC-20 padrão, compatível com MetaMask, Ledger, Trust Wallet, Coinbase Wallet e qualquer carteira que suporte a rede Ethereum. Para transferências, você precisa apenas do endereço do contrato GTKToken no Etherscan. Obs: transferências exigem que o destinatário tenha KYC ativo — endereços sem verificação não podem receber GTK por design.</div>
+        </div>
+        <div class="faq-item" data-animate data-delay="1">
+          <div class="faq-q">Como funciona o resgate de ouro físico?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Usuários com mínimo de 100 GTK (= 100g de ouro) podem chamar a função <code>requestRedemption()</code> no smart contract. O contrato queima os tokens, registra o pedido de entrega e a equipe de custódia processa a logística. Taxa de 0,5% sobre o resgate para cobrir transporte e seguro. Prazo estimado: 5 a 10 dias úteis dependendo da localização.</div>
+        </div>
+        <div class="faq-item" data-animate data-delay="2">
+          <div class="faq-q">O que acontece se o GoldBank encerrar as atividades?<span class="faq-icon">+</span></div>
+          <div class="faq-a">O protocolo foi desenhado para resistir a este cenário. Os contratos são upgradeable com timelock — qualquer mudança crítica leva 48h para executar. As reservas de ouro físico são custodiadas por entidade independente. Em caso de encerramento, um processo de liquidação ordenado distribuiria o ouro equivalente diretamente a todos os holders proporcionalmente.</div>
+        </div>
+        <div class="faq-item" data-animate data-delay="3">
+          <div class="faq-q">Quanto tempo leva o depósito via PIX?<span class="faq-icon">+</span></div>
+          <div class="faq-a">O PIX é confirmado pelo Banco Central em até 10 segundos. Nossa API recebe a confirmação do Asaas, verifica o pagamento e chama o smart contract para mint dos tokens. O processo completo geralmente leva entre 30 segundos e 2 minutos dependendo do congestionamento da rede Ethereum. Valor mínimo: R$ 50,00.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOCIAL PROOF
+  ============================================================ -->
+  <section id="comunidade-voz" class="section" style="background: var(--bg2);">
+    <div class="container">
+      <div class="section-header center">
+        <span class="label" data-animate>Comunidade</span>
+        <h2 class="section-title" data-animate data-delay="1">A voz dos <span class="gradient-text">primeiros holders</span></h2>
+        <p class="section-sub" data-animate data-delay="2">O que dizem quem já transformou reais em ouro real.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card" data-animate>
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Nunca achei que ia conseguir comprar ouro de verdade com R$ 50. Fiz o PIX às 22h e em 2 minutos já tinha o GTK na MetaMask. Isso é revolução.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">R</div>
+            <div>
+              <div class="testimonial-name">Rafael M.</div>
+              <div class="testimonial-role">Early Adopter · Holder #47</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-animate data-delay="1" style="border-color:rgba(255,215,0,0.25);">
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Como investidor de cripto há 4 anos, nunca vi um projeto que une transparência on-chain com ouro físico auditado assim. O índice de reservas visível no contrato me convenceu.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">C</div>
+            <div>
+              <div class="testimonial-name">Carlos A.</div>
+              <div class="testimonial-role">Tier 2 · Analista de criptoativos</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-animate data-delay="2">
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Finalmente uma forma de proteger o patrimônio da inflação sem precisar abrir conta no exterior. PIX + ouro + blockchain — mais brasileiro que isso impossível.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <div class="testimonial-name">Ana P.</div>
+              <div class="testimonial-role">Tier 1 · Empreendedora</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-animate>
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Tenho 200g de GTK e verifico a reserva on-chain toda semana. É incrível saber que cada token meu corresponde a um grama de ouro físico com número de série no blockchain.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Marcos T.</div>
+              <div class="testimonial-role">Tier 2 · Engenheiro de Software</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-animate data-delay="1">
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Uso o cartão Black para pagar tudo. Cada compra me rende cashback em ouro. Já acumulei 12g só em cashback esse mês. Nenhum cartão convencional chega perto.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">F</div>
+            <div>
+              <div class="testimonial-name">Fernanda L.</div>
+              <div class="testimonial-role">Tier 3 Institucional · Empresária</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-animate data-delay="2" style="border-color:rgba(255,215,0,0.25);">
+          <div class="quote-mark">"</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">Resgatei 100g de ouro físico no terceiro mês. Recebi a barra em casa, com certificado e número de série. Ainda tenho o mesmo hash da transação no Etherscan.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">J</div>
+            <div>
+              <div class="testimonial-name">João V.</div>
+              <div class="testimonial-role">Tier 3 · Primeiro resgate físico GTK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       REVOLUÇÃO / COMUNIDADE
+  ============================================================ -->
+  <section id="revolucao" class="section" style="background: linear-gradient(160deg, var(--bg2) 0%, rgba(255,215,0,0.04) 50%, var(--bg2) 100%); overflow:hidden; position:relative;">
+    <!-- faixa decorativa -->
+    <div style="position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,0.06) 0%,transparent 65%);pointer-events:none;"></div>
+
+    <div class="container" style="position:relative;z-index:1;">
+
+      <!-- headline central -->
+      <div class="section-header center" style="margin-bottom:72px;">
+        <span class="label" data-animate>Movimento</span>
+        <h2 class="section-title" data-animate data-delay="1">
+          Esta não é uma moeda.<br/>
+          <span class="gradient-text">É uma revolução.</span>
+        </h2>
+        <p class="section-sub" data-animate data-delay="2" style="max-width:620px;">
+          Por séculos o ouro esteve nas mãos de bancos e governos.
+          Com o GTK, qualquer brasileiro pode guardar valor real — sem intermediários,
+          sem inflação, sem fronteiras. <strong>A riqueza do futuro começa hoje.</strong>
+        </p>
+      </div>
+
+      <!-- 3 pilares da revolução -->
+      <div class="grid-3" style="margin-bottom:80px;">
+        <div class="card" data-animate style="text-align:center; border-color:rgba(255,215,0,0.2);">
+          <div style="font-size:3rem;margin-bottom:16px;">🔓</div>
+          <h3 style="font-size:1.1rem;margin-bottom:10px;color:var(--gold);">Sem Bancos Tradicionais</h3>
+          <p style="font-size:0.875rem;color:var(--muted);">O GTK não pede permissão. Qualquer carteira Ethereum é uma conta bancária lastreada em ouro.</p>
+        </div>
+        <div class="card" data-animate data-delay="1" style="text-align:center; border-color:rgba(255,215,0,0.4); background:linear-gradient(160deg,rgba(255,215,0,0.05),var(--bg2));">
+          <div style="font-size:3rem;margin-bottom:16px;">🇧🇷</div>
+          <h3 style="font-size:1.1rem;margin-bottom:10px;color:var(--gold);">Feito para o Brasil</h3>
+          <p style="font-size:0.875rem;color:var(--muted);">PIX nativo, BRL direto, sem conta em dólar. O único token de ouro construído do zero para o povo brasileiro.</p>
+        </div>
+        <div class="card" data-animate data-delay="2" style="text-align:center; border-color:rgba(255,215,0,0.2);">
+          <div style="font-size:3rem;margin-bottom:16px;">♾</div>
+          <h3 style="font-size:1.1rem;margin-bottom:10px;color:var(--gold);">Ouro Para Sempre</h3>
+          <p style="font-size:0.875rem;color:var(--muted);">Inflação corrói o dinheiro. O ouro resistiu a 5.000 anos de história. Agora ele cabe no seu celular.</p>
+        </div>
+      </div>
+
+      <!-- contador de comunidade + discord -->
+      <div style="background:var(--bg); border:1px solid rgba(255,215,0,0.2); border-radius:20px; padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;" data-animate>
+        <div>
+          <div class="label" style="margin-bottom:16px;">Comunidade</div>
+          <h3 style="font-size:2rem; margin-bottom:16px;">Faça parte dos <span class="gradient-text">pioneiros</span></h3>
+          <p style="font-size:0.9rem; color:var(--muted); line-height:1.7; margin-bottom:28px;">
+            Junte-se à comunidade GTK no Discord — onde os primeiros holders debatem estratégias,
+            acompanham updates de desenvolvimento em tempo real e moldam o futuro do protocolo.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://discord.gg/goldbank" class="btn btn-primary" target="_blank">
+              <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor"><path d="M15.27.6A15.08 15.08 0 0 0 11.52 0c-.17.3-.37.71-.51 1.03a13.94 13.94 0 0 0-4.02 0A10.9 10.9 0 0 0 6.48 0 15.14 15.14 0 0 0 2.73.6C.39 4.04-.24 7.4.08 10.71a15.16 15.16 0 0 0 4.6 2.28c.37-.5.7-1.04.98-1.6a9.9 9.9 0 0 1-1.55-.74c.13-.09.26-.19.38-.29a10.82 10.82 0 0 0 9.02 0c.12.1.25.2.38.29-.5.28-1.02.52-1.55.74.28.57.61 1.1.98 1.6a15.1 15.1 0 0 0 4.6-2.28c.38-3.85-.65-7.18-2.75-10.11ZM6.01 8.78c-.87 0-1.58-.78-1.58-1.74 0-.96.69-1.74 1.58-1.74.88 0 1.6.78 1.58 1.74 0 .96-.7 1.74-1.58 1.74Zm5.98 0c-.87 0-1.58-.78-1.58-1.74 0-.96.69-1.74 1.58-1.74.88 0 1.6.78 1.58 1.74 0 .96-.7 1.74-1.58 1.74Z"/></svg>
+              Entrar no Discord
+            </a>
+            <a href="https://t.me/goldbank_gtk" class="btn btn-outline" target="_blank">
+              <svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor"><path d="M15.9 1.37 13.5 12.67c-.18.8-.67 1-1.35.62L8.9 10.6l-1.57 1.5c-.17.17-.32.31-.65.31l.23-3.32 6.02-5.43c.26-.23-.06-.36-.4-.13L3.7 9.13.57 8.14c-.68-.21-.69-.68.15-.97L14.97.42c.57-.2 1.07.13.93.95Z"/></svg>
+              Telegram
+            </a>
+          </div>
+        </div>
+
+        <!-- stats da comunidade -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div style="background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center;">
+            <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="counter-members">0</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Membros Discord</div>
+          </div>
+          <div style="background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center;">
+            <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="counter-holders">0</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Holders GTK</div>
+          </div>
+          <div style="background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center;">
+            <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="counter-volume">0</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Volume (BRL)</div>
+          </div>
+          <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); border-radius:14px; padding:24px; text-align:center;">
+            <div style="font-size:2rem; font-weight:900; color:var(--green);">100%</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Lastreado</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- lista de early adopter perks -->
+      <div style="margin-top:64px; display:grid; grid-template-columns:1fr 1fr; gap:24px;" data-animate data-delay="1">
+        <div style="border:1px solid rgba(255,215,0,0.15); border-radius:16px; padding:28px; background:linear-gradient(135deg,rgba(255,215,0,0.03),transparent);">
+          <div style="font-size:1.5rem;margin-bottom:12px;">🏅</div>
+          <h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Early Adopter Badge</h4>
+          <p style="font-size:13px;color:var(--muted);">Os primeiros 1.000 holders recebem badge exclusivo no Discord + NFT de fundador com royalties da taxa do protocolo.</p>
+        </div>
+        <div style="border:1px solid rgba(255,215,0,0.15); border-radius:16px; padding:28px;">
+          <div style="font-size:1.5rem;margin-bottom:12px;">🗳</div>
+          <h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Governança Real</h4>
+          <p style="font-size:13px;color:var(--muted);">Holders com 10+ GTK votam em propostas do protocolo via GTKGovernance — taxas, custódia, novas redes. Sua voz vale ouro.</p>
+        </div>
+        <div style="border:1px solid rgba(255,215,0,0.15); border-radius:16px; padding:28px;">
+          <div style="font-size:1.5rem;margin-bottom:12px;">📣</div>
+          <h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Programa de Embaixadores</h4>
+          <p style="font-size:13px;color:var(--muted);">Indique novos usuários e ganhe 0,1% do volume de depósitos da sua rede. Sem limite de ganhos.</p>
+        </div>
+        <div style="border:1px solid rgba(255,215,0,0.15); border-radius:16px; padding:28px; background:linear-gradient(135deg,rgba(255,215,0,0.03),transparent);">
+          <div style="font-size:1.5rem;margin-bottom:12px;">🎯</div>
+          <h4 style="font-size:1rem;font-weight:700;margin-bottom:8px;">Acesso Antecipado</h4>
+          <p style="font-size:13px;color:var(--muted);">Membros da comunidade testam novas funcionalidades (multi-chain, pool de liquidez, staking) antes do lançamento público.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WAITLIST / EARLY ACCESS
+  ============================================================ -->
+  <section id="waitlist" class="section" style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="waitlist-wrap">
+        <span class="label" style="justify-content:center; margin-bottom:20px;" data-animate>Acesso Antecipado</span>
+        <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:900; margin-bottom:16px;" data-animate data-delay="1">
+          Seja um dos <span class="gradient-text">primeiros 1.000</span>
+        </h2>
+        <p style="color:var(--muted); font-size:0.95rem; line-height:1.7; margin-bottom:8px;" data-animate data-delay="2">
+          Cadastre seu e-mail para garantir seu <strong style="color:var(--text)">Early Adopter Badge</strong>,
+          acesso ao canal VIP do Discord, voto prioritário na governança e
+          50 <strong style="color:var(--gold)">pontos GTK</strong> de bônus no primeiro depósito.
+        </p>
+
+        <form class="waitlist-form" data-animate data-delay="3" onsubmit="handleWaitlist(event)">
+          <input type="email" class="waitlist-input" placeholder="seu@email.com.br" required id="waitlist-email" />
+          <button type="submit" class="btn btn-primary" style="flex-shrink:0;">
+            Garantir minha vaga 🥇
+          </button>
+        </form>
+
+        <p id="waitlist-msg" style="margin-top:16px; font-size:13px; color:var(--green); display:none; text-align:center;">
+          ✅ Cadastrado! Você receberá um e-mail de confirmação em breve.
+        </p>
+
+        <div class="waitlist-count" data-animate data-delay="4">
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-num" id="wl-inscrito">847</div>
+            <div class="waitlist-stat-label">Inscritos na lista</div>
+          </div>
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-num" style="color:var(--green);">153</div>
+            <div class="waitlist-stat-label">Vagas restantes</div>
+          </div>
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-num">50</div>
+            <div class="waitlist-stat-label">Pontos bônus GTK</div>
+          </div>
+        </div>
+
+        <!-- urgência -->
+        <div style="margin-top:32px; background:rgba(255,215,0,0.05); border:1px solid rgba(255,215,0,0.15); border-radius:12px; padding:20px; display:flex; align-items:center; gap:14px; text-align:left;" data-animate data-delay="3">
+          <div style="font-size:2rem; flex-shrink:0;">⏳</div>
+          <div>
+            <div style="font-weight:700; font-size:14px; margin-bottom:4px;">Lista fecha quando atingir 1.000 inscritos</div>
+            <div style="font-size:12px; color:var(--muted);">Após o limite, novos usuários entram no plano padrão — sem bônus de early adopter. Garanta sua vaga agora.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA
+  ============================================================ -->
+  <section id="cta" class="section">
+    <div class="container">
+      <div style="max-width:700px; margin: 0 auto; text-align:center;">
+        <span class="label" style="justify-content:center;" data-animate>Comece Agora</span>
+        <h2 class="cta-title" data-animate data-delay="1">
+          O ouro sempre venceu.<br/><span class="gradient-text">Agora é a sua vez.</span>
+        </h2>
+        <p class="cta-sub" data-animate data-delay="2">
+          Você está a um PIX de distância de possuir ouro real na blockchain.
+          Junte-se aos pioneiros que estão transformando como o Brasil guarda valor.
+        </p>
+        <div class="cta-actions" data-animate data-delay="3">
+          <a href="https://app.goldbank.com.br/register" class="btn btn-primary btn-lg">
+            🥇 Quero Meu GTK Agora
+          </a>
+          <a href="https://discord.gg/goldbank" class="btn btn-outline btn-lg" target="_blank">
+            Entrar na Comunidade
+          </a>
+        </div>
+        <p class="cta-disclaimer" data-animate data-delay="4">
+          Investimentos em criptoativos envolvem risco. O preço do ouro oscila com o mercado global.
+          Leia os <a href="/terms" style="color:var(--gold);">Termos de Uso</a> e <a href="/risk" style="color:var(--gold);">Avisos de Risco</a> antes de investir.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo logo" style="margin-bottom:16px;">
+            <div class="nav-logo-icon"><img src="logo.png" alt="GTK" /></div>
+            <span><span class="gradient-text">GTK</span> Gold Token</span>
+          </div>
+          <p class="footer-desc">
+            O primeiro token brasileiro lastreado 1:1 em ouro físico auditado.
+            Construído sobre Ethereum, integrado ao PIX, acessível a todos os brasileiros.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social" title="Twitter/X">𝕏</a>
+            <a href="#" class="footer-social" title="Telegram">✈</a>
+            <a href="#" class="footer-social" title="Discord">◈</a>
+            <a href="#" class="footer-social" title="GitHub">⌥</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Produto</div>
+          <div class="footer-links">
+            <a href="#how-it-works">Como Funciona</a>
+            <a href="https://app.goldbank.com.br">Launch App</a>
+            <a href="#kyc">Verificação KYC</a>
+            <a href="#backing">Reservas</a>
+            <a href="#roadmap">Roadmap</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Developers</div>
+          <div class="footer-links">
+            <a href="https://etherscan.io" target="_blank">Etherscan</a>
+            <a href="https://github.com" target="_blank">GitHub</a>
+            <a href="/docs">Documentação API</a>
+            <a href="/audits">Auditorias</a>
+            <a href="/whitepaper">Whitepaper</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Empresa</div>
+          <div class="footer-links">
+            <a href="https://goldbank.com.br" target="_blank">GoldBank</a>
+            <a href="/about">Sobre</a>
+            <a href="/blog">Blog</a>
+            <a href="/press">Imprensa</a>
+            <a href="mailto:contato@goldbank.com.br">Contato</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 GoldBank Tecnologia. Todos os direitos reservados.</span>
+        <div class="footer-legal">
+          <a href="/terms">Termos de Uso</a>
+          <a href="/privacy">Privacidade</a>
+          <a href="/risk">Aviso de Risco</a>
+          <a href="/audits">Auditorias</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // ---- Navbar scroll effect ----
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ---- Hamburger mobile menu ----
+    document.getElementById('hamburger').addEventListener('click', function() {
+      const links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = '';
+      } else {
+        links.style.cssText = 'display:flex; flex-direction:column; position:absolute; top:68px; left:0; right:0; background:rgba(7,9,15,0.98); padding:24px; border-bottom:1px solid rgba(255,215,0,0.15); z-index:999; backdrop-filter:blur(20px);';
+      }
+    });
+
+    // ---- Scroll animations ----
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+    // ---- FAQ accordion ----
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // ---- Hero canvas particles ----
+    (function initParticles() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      const N = 70;
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() { this.reset(); }
+        reset() {
+          this.x  = Math.random() * W;
+          this.y  = Math.random() * H;
+          this.r  = Math.random() * 2.5 + 0.5;
+          this.vx = (Math.random() - 0.5) * 0.3;
+          this.vy = (Math.random() - 0.5) * 0.3;
+          this.a  = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fillStyle = `rgba(255,215,0,${this.a})`;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < N; i++) particles.push(new Particle());
+
+      function drawLines() {
+        for (let i = 0; i < N; i++) {
+          for (let j = i+1; j < N; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const d  = Math.sqrt(dx*dx + dy*dy);
+            if (d < 120) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(255,215,0,${0.06 * (1 - d/120)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+
+    // ---- Simulated live price update ----
+    (function livePrice() {
+      const base = 95.42;
+      function update() {
+        const jitter = (Math.random() - 0.5) * 0.4;
+        const price  = (base + jitter).toFixed(2);
+        const el1 = document.getElementById('stat-price');
+        const el2 = document.getElementById('card-price');
+        if (el1) el1.textContent = `$${price}/g`;
+        if (el2) el2.textContent = `$${price}`;
+      }
+      setInterval(update, 8000);
+    })();
+
+    // ---- Waitlist form ----
+    function handleWaitlist(e) {
+      e.preventDefault();
+      const email = document.getElementById('waitlist-email').value;
+      if (!email) return;
+      // POST para sua API: fetch('/api/waitlist', { method:'POST', body: JSON.stringify({email}) })
+      document.getElementById('waitlist-email').value = '';
+      document.getElementById('waitlist-msg').style.display = 'block';
+      // incrementa contador visual
+      const el = document.getElementById('wl-inscrito');
+      if (el) el.textContent = (parseInt(el.textContent) + 1).toLocaleString('pt-BR');
+    }
+
+    // ---- Animated counters ----
+    function animateCounter(id, target, suffix='', duration=1800) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let start = 0;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= target) { start = target; clearInterval(timer); }
+        el.textContent = Math.floor(start).toLocaleString('pt-BR') + suffix;
+      }, 16);
+    }
+    const countersObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter('counter-members', 847);
+          animateCounter('counter-holders', 312);
+          animateCounter('counter-volume', 2400000, '', 2000);
+          countersObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    const counterEl = document.getElementById('counter-members');
+    if (counterEl) countersObserver.observe(counterEl.closest('.container') || counterEl);
+
+    // ---- Smooth scroll for anchor links ----
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>
